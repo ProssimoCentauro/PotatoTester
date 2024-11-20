@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 scripts_dir="./user_scripts"
 out_dir="./user_outputs"
@@ -18,7 +18,7 @@ check_file()
                 ./"$basename.out" > "$out_dir/$basename.output"
                 rm "$basename.out"
             else
-                echo -e "$basename.c \033[1m\033[4m\033[31mdoes not compile!\033[0m"
+                echo "$basename.c \033[1m\033[4m\033[31mdoes not compile!\033[0m"
             fi
             ;;
         *.py)
@@ -38,8 +38,8 @@ done
 for file in "$out_dir"/*; do
     basename=$(basename "$file" .output)
     if diff $file $exp_dir/$expected_output > /dev/null; then
-        echo -e "$basename is \033[1m\033[4m\033[32mVALID!\033[0m"
+        echo "$basename is \033[1m\033[4m\033[32mVALID!\033[0m"
     else
-        echo -e "$basename is \033[1m\033[4m\033[31mKO\033[0m"
+        echo "$basename is \033[1m\033[4m\033[31mKO\033[0m"
     fi
 done
