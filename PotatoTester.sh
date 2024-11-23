@@ -1,45 +1,68 @@
-#!/bin/sh
+resize -s 24 107 > /dev/null
+stty rows 24 > /dev/null
+stty cols 107 > /dev/null
 
-scripts_dir="./user_scripts"
-out_dir="./user_outputs"
-exp_dir="./expected_output"
-
-expected_output="$(ls "$exp_dir" | head -n 1)"
-
-check_file()
+print_menu()
 {
-    local file="$1"
+    clear
+    cat text_to_print/title
 
-    case "$file" in
-        *.c)
-            basename=$(basename "$file")
-            gcc "$file" -o "$basename.out"
-            if [ $? -eq 0 ]; then
-                ./"$basename.out" > "$out_dir/$basename.output"
-                rm "$basename.out"
-            else
-                echo "$basename.c \033[1m\033[4m\033[31mdoes not compile!\033[0m"
-            fi
-            ;;
-        *.py)
-            basename=$(basename "$file")
-            python3 "$file" > "$out_dir/$basename.output"
-            ;;
-        *)
-            basename=$(basename "$file")
-            ./$file > "$out_dir/$basename.output"
-    esac
+    echo "\n\033[1m\033[32mChoose the version of the Tester you want:\033[0m\n\n"
+    echo "\033[1m\033[33m1) \033[0mVersion 1.0\n"
+    echo "\033[1m\033[33m2) \033[0mVersion 2.0\n"
+    echo "\033[1m\033[33mi) \033[0mversions info\n"
+    echo "\033[1m\033[31me) \033[0mexit the program\n\n"
 }
 
-for file in "$scripts_dir"/*; do
-    check_file "$file"
-done
+print_arrow()
+{
+    echo -n "\033[1m\033[35m_-_->\033[0m"
+}
 
-for file in "$out_dir"/*; do
-    basename=$(basename "$file" .output)
-    if diff $file $exp_dir/$expected_output > /dev/null; then
-        echo "$basename is \033[1m\033[4m\033[32mVALID!\033[0m"
-    else
-        echo "$basename is \033[1m\033[4m\033[31mKO\033[0m"
-    fi
+print_info()
+{
+    echo "The \033[1m\033[33mVersion 1.0\033[0m is for correction of multiple files that should have the same output.\n [\033[1m\033[32mFor example correcting a class of students on a single exercise\033[0m]\njust put the script files in \033[1m\033[36mversions/2.0/user_scripts\033[0m folder,\nand the expected output in \033[1m\033[36mversions/2.0/expected_outputs\033[0m folder.\n"
+
+    echo "The \033[1m\033[33mVersion 2.0\033[0m is for correction of libraries or various functions.\njust put the script files in \033[1m\033[36mversions/2.0/user_scripts\033[0m folder,\nand the expected outputs in \033[1m\033[36mversions/2.0/expected_outputs\033[0m folder.\n\033[1m\033[31mThe files must have the same name!\033[0m\n [\033[1m\033[32mFor example ft_strlen.py in user_scripts and ft_strlen in expected outputs\033[0m]"
+
+    echo -n "\n"
+}
+
+v1="./versions/1.0/tester_v1.sh"
+v2="./versions/2.0/tester_v2.sh"
+
+print_menu
+print_arrow
+
+while true; do
+    read input
+    case $input in
+        1)
+            print_menu
+            sh "$v1"
+            echo -n "\n"
+            print_arrow
+            ;;
+        2)
+            print_menu
+            sh "$v2"
+            echo -n "\n"
+            print_arrow
+            ;;
+        i)
+            print_menu
+            print_info
+            print_arrow
+            ;;
+        e)
+            clear
+            exit
+            ;;
+        *)
+            echo "\033[1m\033[31mInvalid Command! \033[0m"
+            sleep 1.5
+            print_menu
+            print_arrow
+            ;;
+    esac
 done
