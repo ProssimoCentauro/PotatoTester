@@ -21,11 +21,18 @@ print_arrow()
 
 print_info()
 {
-    echo "The \033[1m\033[33mVersion 1.0\033[0m is for correction of multiple files that should have the same output.\n [\033[1m\033[32mFor example correcting a class of students on a single exercise\033[0m]\njust put the script files in \033[1m\033[36mversions/2.0/user_scripts\033[0m folder,\nand the expected output in \033[1m\033[36mversions/2.0/expected_outputs\033[0m folder.\n"
+    echo "The \033[1m\033[33mVersion 1.0\033[0m is for correction of multiple files that should have the same output.\n [\033[1m\033[32mFor example correcting a class of students on a single exercise\033[0m]\njust put the script files in \033[1m\033[36mversions/1.0/user_scripts\033[0m folder,\nand the expected output in \033[1m\033[36mversions/1.0/expected_output\033[0m folder.\n"
 
     echo "The \033[1m\033[33mVersion 2.0\033[0m is for correction of libraries or various functions.\njust put the script files in \033[1m\033[36mversions/2.0/user_scripts\033[0m folder,\nand the expected outputs in \033[1m\033[36mversions/2.0/expected_outputs\033[0m folder.\n\033[1m\033[31mThe files must have the same name!\033[0m\n [\033[1m\033[32mFor example ft_strlen.py in user_scripts and ft_strlen in expected outputs\033[0m]"
 
     echo -n "\n"
+}
+
+print_running_version()
+{
+    version="$1"
+
+    echo "\033[1m\033[4m\033[32mRUNNING\033[0m\033[1m PotatoTester\033[0m \033[1m\033[33m"$version" Version\033[0m:\n"
 }
 
 v1="./versions/1.0/tester_v1.sh"
@@ -39,18 +46,21 @@ while true; do
     case $input in
         1)
             print_menu
+            print_running_version "1.0"
             sh "$v1"
             echo -n "\n"
             print_arrow
             ;;
         2)
             print_menu
+            print_running_version "2.0"
             sh "$v2"
             echo -n "\n"
             print_arrow
             ;;
         i)
             print_menu
+            echo "\033[1m\033[33mPotatoTester \033[0m\033[1m\033[4m\033[35mMANUAL\033[0m:\n"
             print_info
             print_arrow
             ;;
